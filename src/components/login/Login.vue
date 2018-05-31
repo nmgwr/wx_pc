@@ -1,6 +1,12 @@
 <template>
   <div>
-    <h1>{{msg}}</h1>
+    <div class="bg">
+      <el-input
+        placeholder="请输入用户名"
+        v-model="loginName"
+        clearable>
+      </el-input>
+    </div>
   </div>
 </template>
 
@@ -9,11 +15,18 @@ export default {
   name: 'Login',
   data () {
     return {
-      msg: '我是登陆页模板'
+      loginName: ''
     }
   }
 }
 </script>
 <style scoped>
-
+.bg{
+  background:url(../../assets/img/login-bg.png);
+  width: 100vw;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: none;
+}
 </style>
