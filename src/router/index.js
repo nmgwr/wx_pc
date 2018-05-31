@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../components/login/Login'
+import Index from '../components/index/Index'
 import Error400 from '../components/error/Error400'
 import Error401 from '../components/error/Error401'
 import Error404 from '../components/error/Error404'
@@ -13,6 +14,11 @@ export default new Router({
       path: '/',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/index',
+      name: 'Index',
+      component: Index
     },
     {
       path: '/404',
