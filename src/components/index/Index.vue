@@ -3,6 +3,35 @@
     <el-container style="height: 100%; border: 1px solid #eee">
       <!-- 左侧 -->
       <el-aside :width="isCollapse ? '60px' : '230px'" style="background-color: rgb(238, 241, 246)">
+        <div style="height: 6vh;background:#fff">
+          <div v-show="!isCollapse">
+            文字+logo图片
+          </div>
+          <div v-show="isCollapse">
+            logo图片
+          </div>
+        </div>
+        <div style="height: 12vh; background:#fff" v-show="!isCollapse">
+          <el-row>
+            <el-col :span="12">
+              <img src="../../assets/img/touxiang.png" style="height:8vh;margin-top: 1.3vh;margin-left: 1.3vw;">
+            </el-col>
+            <el-col :span="12" style="margin-top: 2.5vh;line-height: 3vh;">
+              <el-row>张三</el-row>
+              <el-row>
+                <el-dropdown>
+                  <i class="el-icon-setting" style="margin-right: 2vh"></i>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item>编辑个人资料</el-dropdown-item>
+                    <el-dropdown-item>修改密码</el-dropdown-item>
+                    <el-dropdown-item>退出</el-dropdown-item>
+                    <el-dropdown-item>其他..</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </el-row>
+            </el-col>
+          </el-row>
+        </div>
         <!-- 左侧菜单 左侧菜单最多支持三级 如果有一级菜单有子菜单才显示，否则不显示-->
         <el-menu :collapse="isCollapse" :unique-opened="true" :collapse-transition="false" style="height:100vh">
           <el-submenu v-for="(item_1,index_1) in menuData" v-if="item_1.child && item_1.child.length > 0" :key="index_1" :index="(index_1 + 1) + ''">
@@ -21,21 +50,14 @@
       <!-- 右侧 -->
       <el-container>
         <!-- 右侧顶部 -->
-        <el-header style="font-size: 1.8vh; height: 6vh; line-height: 6vh">
+        <el-header style="font-size: 1.8vh; height: 6vh; line-height: 6vh;border-bottom:1px solid rgb(123, 117, 117);background:#d8c7a9">
           <el-row>
             <el-col :span="4" style="line-height: 7.5vh">
               <i class="el-icon-menu" style="font-size: 4vh" @click="collapse"></i>
             </el-col>
             <el-col :span="20" style="text-align: right">
-              <el-dropdown>
-              <i class="el-icon-setting" style="margin-right: 2vh"></i>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>查看</el-dropdown-item>
-                <el-dropdown-item>新增</el-dropdown-item>
-                <el-dropdown-item>删除</el-dropdown-item>
-              </el-dropdown-menu>
-          </el-dropdown>
-          <span>温瑞</span>
+              <span>一些小组件</span>
+              <i class="el-icon-error"></i>
             </el-col>
           </el-row>
         </el-header>
