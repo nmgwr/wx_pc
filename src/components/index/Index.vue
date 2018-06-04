@@ -19,12 +19,12 @@
             <el-col :span="12" style="margin-top: 2.5vh;line-height: 3vh;">
               <el-row>张三</el-row>
               <el-row>
-                <el-dropdown>
+                <el-dropdown @command="userinfoCommand">
                   <i class="el-icon-setting" style="margin-right: 2vh"></i>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>编辑个人资料</el-dropdown-item>
                     <el-dropdown-item>修改密码</el-dropdown-item>
-                    <el-dropdown-item>退出</el-dropdown-item>
+                    <el-dropdown-item command="logout">退出</el-dropdown-item>
                     <el-dropdown-item>其他..</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -124,6 +124,12 @@ export default {
     // 折叠菜单
     collapse () {
       this.isCollapse = !this.isCollapse
+    },
+    // 个人信息下拉菜单点击
+    userinfoCommand (command) {
+      if (command === 'logout') {
+        this.$router.push({name: 'Login'})
+      }
     }
   }
 }
