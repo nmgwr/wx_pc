@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <el-container style="height: 100%; border: 1px solid #eee">
-      <!-- 左侧aa -->
+      <!-- 左侧 -->
       <el-aside :width="isCollapse ? '60px' : '230px'" style="background-color: rgb(238, 241, 246)">
         <div style="height: 6vh;background:#fff">
           <div v-show="!isCollapse">
