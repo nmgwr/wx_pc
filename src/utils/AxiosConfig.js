@@ -21,6 +21,7 @@ service.interceptors.response.use(
       localStorage.removeItem('token')
       localStorage.removeItem('userInfo')
       let errMessage = '请求接口【' + response.config.url + '】发生异常【' + response.data.code + '】:【' + response.data.desc + '】'
+      this.$router.push('/')
       throw (errMessage)
     } else {
       Message({

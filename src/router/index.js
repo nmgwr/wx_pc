@@ -8,7 +8,7 @@ import Error404 from '../components/error/Error404'
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
   routes: [
     {
       path: '/',
@@ -37,3 +37,22 @@ export default new Router({
     }
   ]
 })
+
+// 判断权限，可以在路由上增加属性以此判断，但是我这块直接根据路由地址判断了，除了登陆以外其他所有的路由都校验
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'Login') {
+    let token = localStorage.getItem('token')
+    let userInfo = localStorage.getItem('userInfo')
+    if (token && userInfo) {
+      next()
+    } else {
+      next({
+        path: '/'
+      })
+    }
+  } else {
+    next()
+  }
+})
+
+export default router
