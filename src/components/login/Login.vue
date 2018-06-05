@@ -40,10 +40,9 @@ export default {
   methods: {
     login () {
       this.$login('login', this.loginForm).then(respose => {
-        let userInfo = localStorage.getItem('userInfo')// 过滤器中登陆成功已经把用户信息放入localStorage中了
         // this.$router.push('/index')  //通过url字符串跳转
         // this.$router.push({ path: '/index' })  //通过地址
-        this.$router.push({name: 'Index', params: JSON.parse(userInfo)}) // 通过路由文件中得name跳转params为参数
+        this.$router.push({name: 'Index', params: {}}) // 通过路由文件中得name跳转params为参数
       })
     }
   },
@@ -51,7 +50,7 @@ export default {
     let token = localStorage.getItem('token')
     let userInfo = localStorage.getItem('userInfo')
     if (token && userInfo) {
-      this.$router.push({name: 'Index', params: JSON.parse(userInfo)})
+      this.$router.push({name: 'Index', params: {}})
     }
   }
 }

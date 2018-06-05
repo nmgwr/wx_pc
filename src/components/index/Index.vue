@@ -17,7 +17,7 @@
               <img src="../../assets/img/touxiang.png" style="height:8vh;margin-top: 1.3vh;margin-left: 1.3vw;">
             </el-col>
             <el-col :span="12" style="margin-top: 2.5vh;line-height: 3vh;">
-              <el-row>张三</el-row>
+              <el-row>{{userInfo.name}}({{userInfo.loginName}})</el-row>
               <el-row>
                 <el-dropdown @command="userinfoCommand">
                   <i class="el-icon-setting" style="margin-right: 2vh"></i>
@@ -115,8 +115,10 @@ export default {
       ]
     }
     return {
-      tableData: Array(20).fill(tableItem),
-      menuData: Array(4).fill(menuItem),
+      tableData: Array(20).fill(tableItem), // 首页表格假数据
+      menuData: Array(4).fill(menuItem), // 菜单假数据
+      userInfo: '', // 用户信息、包含角色和菜单信息
+      menus: '', // 菜单信息（从userInfo中解析出来）
       isCollapse: false // 菜单是否折叠，默认否
     }
   },
@@ -133,7 +135,18 @@ export default {
         localStorage.removeItem('userInfo')
         this.$router.push({name: 'Login'})
       }
+    },
+    // 初始化菜单
+    initMenu () {
+      // 把userInfo.menus的数据解析成menuItem这样的格式存入this.menus中
+      for (let i = 0; i < this.userInfo.menus.length; i++) {
+        console.log(this.userInfo.menus[i])
+      }
     }
+  },
+  created () {
+    this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
+    this.initMenu()
   }
 }
 </script>
