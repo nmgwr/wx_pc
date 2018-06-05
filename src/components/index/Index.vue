@@ -127,7 +127,10 @@ export default {
     },
     // 个人信息下拉菜单点击
     userinfoCommand (command) {
+      // 退出登陆
       if (command === 'logout') {
+        localStorage.removeItem('token')
+        localStorage.removeItem('userInfo')
         this.$router.push({name: 'Login'})
       }
     }
