@@ -14,7 +14,7 @@
           <el-row>
             <el-col :span="12" style="font-size: 2.5vh;width: 10vw;font-weight: 700;color: #fff;text-align:right">密&nbsp;&nbsp;&nbsp;码：</el-col>
             <el-col :span="12">
-              <el-input v-model="loginForm.passwd" placeholder="请输入密码" clearable></el-input>
+              <el-input v-model="loginForm.passwd" @keyup.enter.native="login()" placeholder="请输入密码" clearable></el-input>
             </el-col>
           </el-row>
         </el-form-item>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { Message } from 'element-ui'
 export default {
   name: 'Login',
   data () {
@@ -39,6 +40,22 @@ export default {
   },
   methods: {
     login () {
+      if (!this.loginForm.loginName) {
+        Message({
+          message: '请输入用户名',
+          type: 'error',
+          duration: 1000
+        })
+        return
+      }
+      if (!this.loginForm.passwd) {
+        Message({
+          message: '请输入密码',
+          type: 'error',
+          duration: 1000
+        })
+        return
+      }
       this.$login('login', this.loginForm).then(respose => {
         // this.$router.push('/index')  //通过url字符串跳转
         // this.$router.push({ path: '/index' })  //通过地址
@@ -47,6 +64,13 @@ export default {
     }
   },
   created () {
+    // let that = this
+    // 监听回车事件
+    // document.onkeyup = function (ev) {
+    //   if (ev.keyCode === 13) {
+    //     that.login()
+    //   }
+    // }
     let token = localStorage.getItem('token')
     let userInfo = localStorage.getItem('userInfo')
     if (token && userInfo) {
