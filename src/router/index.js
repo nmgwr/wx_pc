@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '../components/login/Login'
-import Index from '../components/index/Index'
-import Error400 from '../components/error/Error400'
-import Error401 from '../components/error/Error401'
-import Error404 from '../components/error/Error404'
+import Login from '../views/login/Login'
+import Index from '../views/index/Index'
+import Error400 from '../views/error/Error400'
+import Error401 from '../views/error/Error401'
+import Error404 from '../views/error/Error404'
 
 Vue.use(Router)
 

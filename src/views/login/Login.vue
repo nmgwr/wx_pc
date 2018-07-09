@@ -64,13 +64,6 @@ export default {
     }
   },
   created () {
-    // let that = this
-    // 监听回车事件
-    // document.onkeyup = function (ev) {
-    //   if (ev.keyCode === 13) {
-    //     that.login()
-    //   }
-    // }
     let token = localStorage.getItem('token')
     let userInfo = localStorage.getItem('userInfo')
     if (token && userInfo) {
