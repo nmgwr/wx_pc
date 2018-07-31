@@ -63,15 +63,7 @@
         </el-header>
         <!-- 右侧底部 -->
         <el-main>
-          <!-- tab1 -->
-          <el-table :data="tableData">
-            <el-table-column prop="date" label="日期" width="140">
-            </el-table-column>
-            <el-table-column prop="name" label="姓名" width="120">
-            </el-table-column>
-            <el-table-column prop="address" label="地址">
-            </el-table-column>
-          </el-table>
+        右侧tabs组件
         </el-main>
       </el-container>
     </el-container>
@@ -82,14 +74,7 @@
 export default {
   name: 'Index',
   data () {
-    // 表格假数据
-    const tableItem = {
-      date: '2016-05-02',
-      name: '温瑞',
-      address: '巨华和谐园'
-    }
     return {
-      tableData: Array(20).fill(tableItem), // 首页表格假数据
       menuData: [], // 菜单假数据
       userInfo: '', // 用户信息、包含角色和菜单信息
       menus: '', // menus从info中解析出来
