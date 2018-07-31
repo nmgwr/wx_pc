@@ -50,19 +50,20 @@
       <!-- 右侧 -->
       <el-container>
         <!-- 右侧顶部 -->
-        <el-header style="font-size: 1.8vh; height: 6vh; line-height: 6vh;border-bottom:1px solid rgb(123, 117, 117);background:#d8c7a9">
+        <el-header id="table" style="font-size: 1.8vh; height: 6vh; line-height: 6vh;border-bottom:1px solid rgb(123, 117, 117);background:#d8c7a9">
           <el-row>
             <el-col :span="4" style="line-height: 7.5vh">
               <i class="el-icon-menu" style="font-size: 4vh" @click="collapse"></i>
             </el-col>
             <el-col :span="20" style="text-align: right">
-              <span>一些小组件</span>
+              <span>Tabs组件</span>
               <i class="el-icon-error"></i>
             </el-col>
           </el-row>
         </el-header>
         <!-- 右侧底部 -->
         <el-main>
+          <!-- tab1 -->
           <el-table :data="tableData">
             <el-table-column prop="date" label="日期" width="140">
             </el-table-column>
@@ -87,38 +88,11 @@ export default {
       name: '温瑞',
       address: '巨华和谐园'
     }
-    // 菜单假数据
-    const menuItem = {
-      name: '一级导航凑字数哈哈',
-      icon: 'el-icon-message',
-      child: [
-        {
-          name: '选项1'
-        },
-        {
-          name: '选项2'
-        },
-        {
-          name: '选项3'
-        },
-        {
-          name: '选项4',
-          child: [
-            {
-              name: '选项4-1'
-            },
-            {
-              name: '选项4-2'
-            }
-          ]
-        }
-      ]
-    }
     return {
       tableData: Array(20).fill(tableItem), // 首页表格假数据
-      menuData: Array(4).fill(menuItem), // 菜单假数据
+      menuData: [], // 菜单假数据
       userInfo: '', // 用户信息、包含角色和菜单信息
-      menus: '', // 菜单信息（从userInfo中解析出来）
+      menus: '', // menus从info中解析出来
       isCollapse: false // 菜单是否折叠，默认否
     }
   },
@@ -138,10 +112,36 @@ export default {
     },
     // 初始化菜单
     initMenu () {
+      let menus = []
       // 把userInfo.menus的数据解析成menuItem这样的格式存入this.menus中
+      // 一级菜单
       for (let i = 0; i < this.userInfo.menus.length; i++) {
-        console.log(this.userInfo.menus[i])
+        let menu1 = this.userInfo.menus[i]
+        if (!menu1.child) {
+          menu1.child = []
+        }
+        if (menu1.parentId === '0') {
+          // 二级菜单
+          for (let j = 0; j < this.userInfo.menus.length; j++) {
+            let menu2 = this.userInfo.menus[j]
+            if (!menu2.child) {
+              menu2.child = []
+            }
+            if (menu2.parentId === menu1.id) {
+              // 三级菜单
+              for (let l = 0; l < this.userInfo.menus.length; l++) {
+                let menu3 = this.userInfo.menus[l]
+                if (menu3.parentId === menu2.id) {
+                  menu2.child.push(menu3)
+                }
+              }
+              menu1.child.push(menu2)
+            }
+          }
+          menus.push(menu1)
+        }
       }
+      this.menuData = menus
     }
   },
   created () {
@@ -160,6 +160,7 @@ export default {
   }
   .el-aside {
     color: #333;
+
   }
   aside::-webkit-scrollbar{
     width:2px;
