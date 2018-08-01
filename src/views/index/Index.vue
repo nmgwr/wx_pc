@@ -63,8 +63,9 @@
         </el-header>
         <!-- 右侧底部 -->
         <!-- 右侧tabs组件 -->
-        <el-tabs v-model="editableTabsValue1" type="card" closable @tab-remove="removeTab">
-          <el-tab-pane v-for="(item) in editableTabs1" :key="item.name" :label="item.title" :name="item.name">{{item.content}}</el-tab-pane>
+        <el-tabs v-model="nowTab" type="border-card" @tab-remove="removeTab">
+          <el-tab-pane label="欢迎页" name="1">学习vue+element</el-tab-pane>
+          <el-tab-pane v-for="(item) in tabs" :key="item.name" :closable="item.close" :label="item.title" :name="item.name">{{item.content}}</el-tab-pane>
         </el-tabs>
       </el-container>
     </el-container>
@@ -80,18 +81,11 @@ export default {
   name: 'Index',
   data () {
     return {
-      menuData: [], // 菜单假数据
       userInfo: '', // 用户信息、包含角色和菜单信息
       menus: '', // menus从info中解析出来
       isCollapse: false, // 菜单是否折叠，默认否
-      // 默认首页tabs标签
-      editableTabsValue1: '1',
-      editableTabs1: [{
-        title: '欢迎',
-        name: '1',
-        content: 'Welcome to you !'
-      }],
-      tabIndex: 1
+      tabs: [], // 页签组
+      nowTab: '1' // 当前页签
     }
   },
   // components: {
@@ -101,35 +95,43 @@ export default {
   methods: {
     // 点击菜单添加tabs标签
     addTab (menu) {
-      let newTabName = menu.name
-      let menuHref = menu.href
-      // let href = ''
-      console.log(menuHref)
-      this.editableTabs1.push({
-        title: newTabName,
-        name: newTabName,
-        content: newTabName
+      let flag = true
+      this.tabs.forEach((tab, index) => {
+        if (tab.name === menu.name) {
+          flag = false
+        }
       })
-      // alert(href = '../sys/cacheList.vue')
-      this.editableTabsValue1 = newTabName
-      // this.$router.push({ path: '/sys/cacheLish.vue' })
-      // this.$message('click on item ' + cacheList)
+      if (flag) {
+        let menuHref = menu.href
+        console.log(menuHref)
+        this.tabs.push({
+          title: menu.name,
+          name: menu.name,
+          content: menu.name,
+          close: true
+        })
+        this.nowTab = menu.name
+      } else {
+        this.nowTab = menu.name
+      }
     },
-    removeTab (targetName) {
-      let tabs = this.editableTabs1
-      let activeName = this.editableTabsValue1
-      if (activeName === targetName) {
-        tabs.forEach((tab, index) => {
-          if (tab.name === targetName) {
-            let nextTab = tabs[index + 1] || tabs[index - 1]
-            if (nextTab) {
-              activeName = nextTab.name
+    removeTab (tabName) {
+      this.tabs.forEach((tab, index) => {
+        if (tab.name === tabName) {
+          this.tabs.splice(index, 1)
+          if (tabName === this.nowTab) {
+            if (this.tabs.length === 0) {
+              this.nowTab = '1'
+            } else {
+              this.nowTab = this.tabs[index].name
             }
           }
-        })
-        this.editableTabsValue1 = activeName
-        this.editableTabs1 = tabs.filter(tab => tab.name !== targetName)
-      }
+        } else {
+          if (this.tabs.length === 0) {
+            this.nowTab = '1'
+          }
+        }
+      })
     },
     // 折叠菜单
     collapse () {
