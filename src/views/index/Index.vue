@@ -39,17 +39,17 @@
               <i :class="item_1.icon"></i>
               <span slot="title">{{item_1.name}}</span>
             </template>
-            <el-menu-item v-for="(item_2_1,index_2_1) in item_1.child" v-if="!item_2_1.child || item_2_1.child.length < 2" :key="index_2_1" :index="(index_1 + 1) + '-' + (index_2_1 + 1)">{{item_2_1.name}}</el-menu-item>
+            <el-menu-item @click='addTab(item_2_1)' v-for="(item_2_1,index_2_1) in item_1.child" v-if="!item_2_1.child || item_2_1.child.length < 2" :key="index_2_1" :index="(index_1 + 1) + '-' + (index_2_1 + 1)">{{item_2_1.name}}</el-menu-item>
             <el-submenu v-for="(item_2_2,index_2_2) in item_1.child" v-if="item_2_2.child && item_2_2.child.length > 1" :key="index_2_2" :index="(index_1 + 1) + '-' + (index_2_2 + 1)">
               <template slot="title">{{item_2_2.name}}</template>
-              <el-menu-item v-for="(item_3,index_3) in item_2_2.child" :key="index_3" :index="(index_1 + 1) + '-' + (index_2_2 + 1) + '-' + (index_3 + 1)">{{item_3.name}}</el-menu-item>
+              <el-menu-item @click='addTab(item_3)' v-for="(item_3,index_3) in item_2_2.child" :key="index_3" :index="(index_1 + 1) + '-' + (index_2_2 + 1) + '-' + (index_3 + 1)">{{item_3.name}}</el-menu-item>
+                <!-- <a href="https://www.ele.me" target="_blank">订单管理</a> -->
             </el-submenu>
           </el-submenu>
         </el-menu>
       </el-aside>
       <!-- 右侧 -->
       <el-container>
-        <!-- 右侧顶部 -->
         <el-header id="table" style="font-size: 1.8vh; height: 6vh; line-height: 6vh;border-bottom:1px solid rgb(123, 117, 117);background:#d8c7a9">
           <el-row>
             <el-col :span="4" style="line-height: 7.5vh">
@@ -62,15 +62,20 @@
           </el-row>
         </el-header>
         <!-- 右侧底部 -->
-        <el-main>
-        右侧tabs组件
-        </el-main>
+        <!-- 右侧tabs组件 -->
+        <el-tabs v-model="editableTabsValue1" type="card" closable @tab-remove="removeTab">
+          <el-tab-pane v-for="(item) in editableTabs1" :key="item.name" :label="item.title" :name="item.name">{{item.content}}</el-tab-pane>
+        </el-tabs>
       </el-container>
     </el-container>
   </div>
 </template>
 
 <script>
+
+// import cacheList from '../sys/cacheList.vue'
+// import dataLog from '.vscode/src/sys/dataLog.vue'
+
 export default {
   name: 'Index',
   data () {
@@ -78,10 +83,54 @@ export default {
       menuData: [], // 菜单假数据
       userInfo: '', // 用户信息、包含角色和菜单信息
       menus: '', // menus从info中解析出来
-      isCollapse: false // 菜单是否折叠，默认否
+      isCollapse: false, // 菜单是否折叠，默认否
+      // 默认首页tabs标签
+      editableTabsValue1: '1',
+      editableTabs1: [{
+        title: '欢迎',
+        name: '1',
+        content: 'Welcome to you !'
+      }],
+      tabIndex: 1
     }
   },
+  // components: {
+  //   'cacheList': cacheList
+  // 'dataLog': dataLog
+  // },
   methods: {
+    // 点击菜单添加tabs标签
+    addTab (menu) {
+      let newTabName = menu.name
+      let menuHref = menu.href
+      // let href = ''
+      console.log(menuHref)
+      this.editableTabs1.push({
+        title: newTabName,
+        name: newTabName,
+        content: newTabName
+      })
+      // alert(href = '../sys/cacheList.vue')
+      this.editableTabsValue1 = newTabName
+      // this.$router.push({ path: '/sys/cacheLish.vue' })
+      // this.$message('click on item ' + cacheList)
+    },
+    removeTab (targetName) {
+      let tabs = this.editableTabs1
+      let activeName = this.editableTabsValue1
+      if (activeName === targetName) {
+        tabs.forEach((tab, index) => {
+          if (tab.name === targetName) {
+            let nextTab = tabs[index + 1] || tabs[index - 1]
+            if (nextTab) {
+              activeName = nextTab.name
+            }
+          }
+        })
+        this.editableTabsValue1 = activeName
+        this.editableTabs1 = tabs.filter(tab => tab.name !== targetName)
+      }
+    },
     // 折叠菜单
     collapse () {
       this.isCollapse = !this.isCollapse
