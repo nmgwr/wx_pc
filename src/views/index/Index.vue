@@ -63,7 +63,7 @@
         </el-header>
         <!-- 右侧底部 -->
         <!-- 右侧tabs组件 -->
-        <el-tabs v-model="nowTab" type="border-card" @tab-remove="removeTab">
+        <el-tabs v-model="nowTab" type="card" @tab-remove="removeTab">
           <el-tab-pane label="欢迎页" name="1">学习vue+element</el-tab-pane>
           <el-tab-pane v-for="(item) in tabs" :key="item.name" :closable="item.close" :label="item.title" :name="item.name">{{item.content}}</el-tab-pane>
         </el-tabs>
@@ -73,9 +73,6 @@
 </template>
 
 <script>
-
-// import cacheList from '../sys/cacheList.vue'
-// import dataLog from '.vscode/src/sys/dataLog.vue'
 
 export default {
   name: 'Index',
@@ -88,12 +85,8 @@ export default {
       nowTab: '1' // 当前页签
     }
   },
-  // components: {
-  //   'cacheList': cacheList
-  // 'dataLog': dataLog
-  // },
   methods: {
-    // 点击菜单添加tabs标签
+    // 点击左侧菜单添加tabs标签
     addTab (menu) {
       let flag = true
       this.tabs.forEach((tab, index) => {
@@ -115,23 +108,30 @@ export default {
         this.nowTab = menu.name
       }
     },
+    // 删除tab页签
     removeTab (tabName) {
-      this.tabs.forEach((tab, index) => {
+      for (let i = 0; i < this.tabs.length; i++) {
+        let tab = this.tabs[i]
         if (tab.name === tabName) {
-          this.tabs.splice(index, 1)
+          this.tabs.splice(i, 1)
           if (tabName === this.nowTab) {
             if (this.tabs.length === 0) {
               this.nowTab = '1'
             } else {
-              this.nowTab = this.tabs[index].name
+              if (i - 1 < 0) {
+                this.nowTab = this.tabs[i].name
+              } else {
+                this.nowTab = this.tabs[i - 1].name
+              }
+            }
+          } else {
+            if (this.tabs.length === 0) {
+              this.nowTab = '1'
             }
           }
-        } else {
-          if (this.tabs.length === 0) {
-            this.nowTab = '1'
-          }
+          break
         }
-      })
+      }
     },
     // 折叠菜单
     collapse () {
