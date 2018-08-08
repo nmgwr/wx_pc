@@ -56,7 +56,7 @@
               <i class="el-icon-menu" style="font-size: 4vh" @click="collapse"></i>
             </el-col>
             <el-col :span="20" style="text-align: right">
-              <span>Tabs组件</span>
+              <span>{{nowTab}}--{{tabPageUrl.__file}}</span>
               <i class="el-icon-error"></i>
             </el-col>
           </el-row>
@@ -68,9 +68,8 @@
               <component :is="welcome"></component>
           </el-tab-pane>
           <el-tab-pane v-for="(item) in tabs" :key="item.name" :closable="item.close" :label="item.title" :name="item.name">
-            <!-- {{item.name}} -->
             <keep-alive>
-              <component :is="tabPage"></component>
+              <component v-if="item.title === nowTab" :is="tabPageUrl"></component>
             </keep-alive>
           </el-tab-pane>
         </el-tabs>
@@ -89,12 +88,21 @@ export default {
   data () {
     return {
       welcome: 'Welcome', // 欢迎页组件手动引入了
-      tabPage: '', // 当前tab Url
+      tabPageUrl: '', // 当前tab Url
       userInfo: '', // 用户信息、包含角色和菜单信息
       menus: '', // menus从info中解析出来
       isCollapse: false, // 菜单是否折叠，默认否
       tabs: [], // 页签组
       nowTab: '1' // 当前页签
+    }
+  },
+  watch: {
+    nowTab: function () {
+      for (let i = 0; i < this.tabs.length; i++) {
+        if (this.nowTab === this.tabs[i].name) {
+          this.tabPageUrl = require(`@/views${this.tabs[i].href}.vue`).default
+        }
+      }
     }
   },
   methods: {
@@ -108,6 +116,7 @@ export default {
       })
       if (flag) {
         this.tabs.push({
+          href: menu.href,
           title: menu.name,
           name: menu.name,
           content: menu.name,
@@ -117,7 +126,7 @@ export default {
       } else {
         this.nowTab = menu.name
       }
-      this.tabPage = require(`@/views${menu.href}.vue`).default
+      this.tabPageUrl = require(`@/views${menu.href}.vue`).default
     },
     // 删除tab页签
     removeTab (tabName) {

@@ -5,6 +5,7 @@
 </template>
 <script>
 export default {
+  name: 'userList',
   created: function () {
     console.log('用户列表')
   }

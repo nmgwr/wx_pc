@@ -5,6 +5,7 @@
 </template>
 <script>
 export default {
+  name: 'dictList',
   created: function () {
     console.log('字典列表')
   }

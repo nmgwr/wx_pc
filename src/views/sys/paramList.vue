@@ -8,6 +8,7 @@
 </template>
 <script>
 export default {
+  name: 'paramList',
   created: function () {
     console.log('参数列表')
   }
