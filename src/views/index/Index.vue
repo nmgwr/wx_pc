@@ -64,8 +64,15 @@
         <!-- 右侧底部 -->
         <!-- 右侧tabs组件 -->
         <el-tabs v-model="nowTab" type="card" @tab-remove="removeTab">
-          <el-tab-pane label="欢迎页" name="1">学习vue+element</el-tab-pane>
-          <el-tab-pane v-for="(item) in tabs" :key="item.name" :closable="item.close" :label="item.title" :name="item.name">{{item.content}}</el-tab-pane>
+          <el-tab-pane label="欢迎页" name="1">
+              <component :is="welcome"></component>
+          </el-tab-pane>
+          <el-tab-pane v-for="(item) in tabs" :key="item.name" :closable="item.close" :label="item.title" :name="item.name">
+            <!-- {{item.name}} -->
+            <keep-alive>
+              <component :is="tabPage"></component>
+            </keep-alive>
+          </el-tab-pane>
         </el-tabs>
       </el-container>
     </el-container>
@@ -73,11 +80,16 @@
 </template>
 
 <script>
-
+import Welcome from './welcome'
 export default {
+  components: {
+    Welcome
+  },
   name: 'Index',
   data () {
     return {
+      welcome: 'Welcome', // 欢迎页组件手动引入了
+      tabPage: '', // 当前tab Url
       userInfo: '', // 用户信息、包含角色和菜单信息
       menus: '', // menus从info中解析出来
       isCollapse: false, // 菜单是否折叠，默认否
@@ -95,8 +107,6 @@ export default {
         }
       })
       if (flag) {
-        let menuHref = menu.href
-        console.log(menuHref)
         this.tabs.push({
           title: menu.name,
           name: menu.name,
@@ -107,6 +117,7 @@ export default {
       } else {
         this.nowTab = menu.name
       }
+      this.tabPage = require(`@/views${menu.href}.vue`).default
     },
     // 删除tab页签
     removeTab (tabName) {
